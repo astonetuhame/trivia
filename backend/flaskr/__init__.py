@@ -1,4 +1,5 @@
 import os
+from traceback import format_tb
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
@@ -16,7 +17,7 @@ def create_app(test_config=None):
     """
     @TODO: Set up CORS. Allow '*' for origins. Delete the sample route after completing the TODOs
     """
-    CORS(app, resources={r"*api/*": {"origins": '*'}})
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
    
     """
     @TODO: Use the after_request decorator to set Access-Control-Allow
@@ -32,6 +33,14 @@ def create_app(test_config=None):
     Create an endpoint to handle GET requests
     for all available categories.
     """
+    @app.route('/categories', methods=['GET'])
+    def get_categories():
+        categories = Category.query.all()
+        formatted_categories = [category.format() for category in categories]
+        return jsonify ({
+            "success": True,
+            "categories": formatted_categories
+        })
 
 
     """

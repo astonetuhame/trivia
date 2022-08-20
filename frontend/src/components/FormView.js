@@ -3,6 +3,7 @@ import $ from 'jquery';
 import '../stylesheets/FormView.css';
 
 class FormView extends Component {
+
   constructor(props) {
     super();
     this.state = {
@@ -12,7 +13,10 @@ class FormView extends Component {
       category: 1,
       categories: {},
     };
+
   }
+
+
 
   componentDidMount() {
     $.ajax({
@@ -28,6 +32,7 @@ class FormView extends Component {
       },
     });
   }
+
 
   submitQuestion = (event) => {
     event.preventDefault();
@@ -89,12 +94,13 @@ class FormView extends Component {
             </select>
           </label>
           <label>
+
             Category
             <select name='category' onChange={this.handleChange}>
               {Object.keys(this.state.categories).map((id) => {
                 return (
                   <option key={id} value={id}>
-                    {this.state.categories[id]}
+                    {this.state.categories[id].id}
                   </option>
                 );
               })}
