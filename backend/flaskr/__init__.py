@@ -114,7 +114,7 @@ def create_app(test_config=None):
     def add_question():
         body = request.get_json()
 
-        search_term = body.get("question", None)
+        new_question = body.get("question", None)
         new_answer = body.get("answer", None)
         new_category = body.get("category", None)
         new_difficulty = body.get("difficulty", None)
