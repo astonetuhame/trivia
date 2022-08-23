@@ -3,6 +3,7 @@ from traceback import format_tb
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from sqlalchemy.sql.expression import func
 import random
 
 from models import setup_db, Question, Category
@@ -10,6 +11,8 @@ from models import setup_db, Question, Category
 QUESTIONS_PER_PAGE = 10
 
 # utility for paginating questions
+
+
 def paginate_questions(request, selection):
     page = request.args.get('page', 1, type=int)
     start = (page - 1) * QUESTIONS_PER_PAGE
@@ -203,7 +206,6 @@ def create_app(test_config=None):
             'current_category': category.type
         })
 
-
     """
     @TODO:
     Create a POST endpoint to get questions to play the quiz.
@@ -215,6 +217,28 @@ def create_app(test_config=None):
     one question at a time is displayed, the user is allowed to answer
     and shown whether they were correct or not.
     """
+
+    @app.route('/quizzes', methods=['POST'])
+    def get_quiz_questions():
+        """
+        Gets question for quiz
+        :return: Uniques quiz question or None
+        """
+        previous_questions = request.json.get('previous_questions')
+        quiz_category = request.json.get('quiz_category')
+        if not quiz_category:
+            return abort(400, 'Required keys missing from request body')
+        category_id = int(quiz_category.get('id'))
+        questions = Question.query.filter(
+            Question.category == category_id,
+            ~Question.id.in_(previous_questions)) if category_id else \
+            Question.query.filter(~Question.id.in_(previous_questions))
+        question = questions.order_by(func.random()).first()
+        if not question:
+            return jsonify({})
+        return jsonify({
+            'question': question.format()
+        })
 
     """
     @TODO:
