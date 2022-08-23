@@ -138,28 +138,28 @@ def create_app(test_config=None):
     """
     @app.route('/questions', methods=['POST'])
     def add_question():
-        body = request.get_json()
+        # body = request.get_json()
 
-        new_question = body.get("question", None)
-        new_answer = body.get("answer", None)
-        new_category = body.get("category", None)
-        new_difficulty = body.get("difficulty", None)
+        new_question = request.json.get("question")
+        new_answer = request.json.get("answer")
+        new_category = request.json.get("category")
+        new_difficulty = request.json.get("difficulty")
+        if not (new_question and new_answer and new_category and new_difficulty):
+            return abort(400,
+                         'Required question object keys missing from request '
+                         'body')
 
-        try:
-            question = Question(question=new_question, answer=new_answer,
-                                category=new_category, difficulty=new_difficulty)
-            question.insert()
+        question = Question(new_question, new_answer,
+                            new_category, new_difficulty)
+        question.insert()
 
-            return jsonify(
-                {
-                    "success": True,
-                    "question": question,
-                    "total_questions": len(Question.query.all()),
-                }
-            )
-
-        except:
-            abort(422)
+        return jsonify(
+            {
+                "success": True,
+                "question": question.format(),
+                "total_questions": len(Question.query.all()),
+            }
+        )
 
     """
     @TODO:
