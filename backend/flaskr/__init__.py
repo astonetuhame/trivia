@@ -1,4 +1,5 @@
 import os
+import re
 from traceback import format_tb
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
@@ -172,18 +173,12 @@ def create_app(test_config=None):
     """
     @app.route('/questions/search', methods=['POST'])
     def search_question():
-        body = request.get_json()
-        search_term = body.get("search_term")
-        questions = Question.query.filter(
-            Question.question.ilike('%' + search_term + '%'))
-        data = []
-        for question in questions:
-            data.append({
-                "question": question.question
-            })
+        search_term = request.json.get('searchTerm', '')
+        questions = [question.format() for question in Question.query.all() if
+                     re.search(search_term, question.question, re.IGNORECASE)]
         return jsonify({
-            "success": True,
-            "search": data
+            'questions': questions,
+            'total_questions': len(questions)
         })
 
     """
