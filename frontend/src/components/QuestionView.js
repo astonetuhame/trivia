@@ -145,11 +145,11 @@ class QuestionView extends Component {
                   this.getByCategory(id);
                 }}
               >
-                {this.state.categories[id].id}
+                {this.state.categories[id]}
                 <img
                   className='category'
-                  alt={`${(this.state.categories[id].id).toLowerCase()}`}
-                  src={`${(this.state.categories[id].id).toLowerCase()}.svg`}
+                  alt={`${(this.state.categories[id])}`}
+                  src={`${(this.state.categories[id])}.svg`}
                 />
               </li>
             ))}
