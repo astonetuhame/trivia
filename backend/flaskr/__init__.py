@@ -9,6 +9,17 @@ from models import setup_db, Question, Category
 
 QUESTIONS_PER_PAGE = 10
 
+# utility for paginating questions
+def paginate_questions(request, selection):
+    page = request.args.get('page', 1, type=int)
+    start = (page - 1) * QUESTIONS_PER_PAGE
+    end = start + QUESTIONS_PER_PAGE
+
+    questions = [question.format() for question in selection]
+    current_questions = questions[start:end]
+
+    return current_questions
+
 
 def create_app(test_config=None):
     # create and configure the app
@@ -87,7 +98,6 @@ def create_app(test_config=None):
                 abort(404)
 
             question.delete()
-            selection = Question.query.order_by(Question.id).all()
 
             return jsonify(
                 {
@@ -169,6 +179,30 @@ def create_app(test_config=None):
     categories in the left column will cause only questions of that
     category to be shown.
     """
+
+    @app.route('/categories/<int:id>/questions', methods=['GET'])
+    def get_questions_by_category(id):
+        # get the category by id
+        category = Category.query.filter_by(id=id).one_or_none()
+
+        # abort 400 for bad request if category isn't found
+        if (category is None):
+            abort(400)
+
+        # get the matching questions
+        selection = Question.query.filter_by(category=str(category.id)).all()
+
+        # paginate the selection
+        paginated = paginate_questions(request, selection)
+
+        # return the results
+        return jsonify({
+            'success': True,
+            'questions': paginated,
+            'total_questions': len(Question.query.all()),
+            'current_category': category.type
+        })
+
 
     """
     @TODO:
