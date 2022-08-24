@@ -90,7 +90,7 @@ The API will return three types of errors:
 * 405 – method not allowed
 * 500 – server error
 
-### Endpoints
+## Endpoints
 
 #### GET /categories
 
