@@ -235,7 +235,7 @@ def create_app(test_config=None):
         return (
             jsonify({"success": False, "error": 500,
                     "message": "server error"}),
-            405,
+            500,
         )
 
     return app
