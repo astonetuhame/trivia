@@ -94,9 +94,12 @@ The API will return three types of errors:
 
 #### GET /categories
 
-* General: Returns a list categories.
+* General: Fetches a dictionary of categories in which the keys are the ids and the value is the  corresponding string of the category
+* Request Arguments: None
+* Returns: An object with a single key, categories, that contains an object of id: category_string key:value pairs.
 * Sample: `curl http://127.0.0.1:5000/categories`<br>
 
+```json
         {
             "categories": [
                 {
@@ -126,16 +129,17 @@ The API will return three types of errors:
             ],
             "success": true
         }
+```
 
 
-#### GET /questions
+#### GET '/questions?page=${integer}'
 
-* General:
-  * Returns a list questions.
-  * Results are paginated in groups of 10.
-  * Also returns list of categories and total number of questions.
+* General: Returns a list questions, paginated in groups of 10.
+* Request Arguments: `page` - integer
+* Returns: An object with 10 paginated questions, total questions, object including all categories, and current category string
 * Sample: `curl http://127.0.0.1:5000/questions`<br>
 
+```json
         {
             "categories": {
                 "1": "Science", 
@@ -220,32 +224,43 @@ The API will return three types of errors:
             "success": true, 
             "total_questions": 19
         }
+```
 
 #### DELETE /questions/\<int:id\>
 
-* General:
-  * Deletes a question by id using url parameters.
-  * Returns id of deleted question and total questions upon success.
+* General: Deletes a question by id using url parameters.
+* Request Arguments: `id` - integer
+* Returns: Id of deleted question and total questions upon success.
 * Sample: `curl http://127.0.0.1:5000/questions/6 -X DELETE`<br>
 
+```json
         {
             "deleted": 6, 
             "success": true,
             "total_questions": 18
         }
+```
 
 #### POST /questions
 
-* General:
-  * Creates a new question using JSON request parameters.
-  * Returns JSON object with newly created question and the total questions
+* General: Creates a new question using JSON request parameters.
+* Request Body:
+```json
+{
+  "question": "Heres a new question string",
+  "answer": "Heres a new answer string",
+  "difficulty": 1,
+  "category": 3
+}
+```
+* Returns: JSON object with newly created question and the total questions
 * Sample: `curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{
             "question": "What year did Avengers first come out?",
             "answer": "2012",
             "difficulty": 1,
             "category": "5"
         }'`<br>
-
+```json
         {
             "question": 
                 {
@@ -258,15 +273,22 @@ The API will return three types of errors:
             "success": true, 
             "total_questions": 20
         }
+```
 
 
 #### POST /questions/search
 
-* General:
-  * Searches for questions using search term in JSON request parameters.
-  * Returns JSON object with paginated matching questions.
+* General: Searches for questions using `searchTerm` in JSON request parameters.
+* Request Body:
+```json
+{
+  "searchTerm": "this is the term the user is looking for"
+}
+```
+* Returns: JSON object with paginated matching questions.
 * Sample: `curl http://127.0.0.1:5000/questions/search -X POST -H "Content-Type: application/json" -d '{"searchTerm": "which"}'`<br>
 
+```json
         {
             "questions": [
                 {
@@ -322,14 +344,16 @@ The API will return three types of errors:
             "success": true, 
             "total_questions": 7
         }
+```
 
 #### GET /categories/\<int:id\>/questions
 
-* General:
-  * Gets questions by category id using url parameters.
-  * Returns JSON object with paginated matching questions and the total questions.
+* General: Gets questions by category id using url parameters.
+* Request Arguments: `id` - integer
+* Returns: JSON object with paginated matching questions and the total questions.
 * Sample: `curl http://127.0.0.1:5000/categories/1/questions`<br>
 
+```json
         {
             "current_category": "Science", 
              "questions": [
@@ -358,16 +382,24 @@ The API will return three types of errors:
             "success": true, 
             "total_questions": 19
         }
+```
 
 #### POST /quizzes
 
 * General:
   * Allows users to play the quiz game.
   * Uses JSON request parameters of category and previous questions.
-  * Returns JSON object with random question not among previous questions.
+* Request Body:
+```json
+{
+    'previous_questions': [1, 4, 20, 15]
+    quiz_category': 'current category'
+ }
+```
+* Returns: JSON object with random question not among previous questions.
 * Sample: `curl http://127.0.0.1:5000/quizzes -X POST -H "Content-Type: application/json" -d '{"previous_questions": [20, 21],
                                             "quiz_category": {"type": "Science", "id": "1"}}'`<br>
-
+```json
         {
             "question": {
                 "answer": "Blood", 
@@ -378,6 +410,7 @@ The API will return three types of errors:
             }, 
             "success": true
         }
+```
 
 ## Authors
 
