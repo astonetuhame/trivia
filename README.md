@@ -247,8 +247,8 @@ The API will return three types of errors:
 * Request Body:
 ```json
 {
-  "question": "Heres a new question string",
-  "answer": "Heres a new answer string",
+  "question": "What year did Avengers first come out?",
+  "answer": "2012",
   "difficulty": 1,
   "category": 3
 }
