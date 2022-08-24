@@ -236,10 +236,6 @@ The API will return three types of errors:
 
 #### POST /questions
 
-This endpoint either creates a new question or returns search results.
-
-1. If <strong>no</strong> search term is included in request:
-
 * General:
   * Creates a new question using JSON request parameters.
   * Returns JSON object with newly created question and the total questions
@@ -264,7 +260,7 @@ This endpoint either creates a new question or returns search results.
         }
 
 
-2. If search term <strong>is</strong> included in request:
+#### POST /questions/search
 
 * General:
   * Searches for questions using search term in JSON request parameters.
