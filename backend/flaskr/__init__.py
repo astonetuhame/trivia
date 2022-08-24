@@ -1,3 +1,4 @@
+from http.client import HTTPException
 import re
 from traceback import format_tb
 from flask import Flask, request, abort, jsonify
@@ -100,7 +101,7 @@ def create_app(test_config=None):
                 }
             )
 
-        except:
+        except HTTPException:
             abort(422)
 
     # Add a question
@@ -112,7 +113,8 @@ def create_app(test_config=None):
         new_answer = request.json.get("answer")
         new_category = request.json.get("category")
         new_difficulty = request.json.get("difficulty")
-        if not (new_question and new_answer and new_category and new_difficulty):
+        if not (new_question and new_answer and new_category
+           and new_difficulty):
             return abort(400,
                          'Required question object keys missing from request '
                          'body')
@@ -130,7 +132,7 @@ def create_app(test_config=None):
                 }
             )
 
-        except:
+        except HTTPException:
             abort(422)
 
     # Search questions
@@ -215,7 +217,9 @@ def create_app(test_config=None):
 
     @app.errorhandler(400)
     def bad_request(error):
-        return jsonify({"success": False, "error": 400, "message": "bad request"}), 400
+        return jsonify({"success": False,
+                        "error": 400,
+                        "message": "bad request"}), 400
 
     @app.errorhandler(405)
     def method_not_allowed(error):
