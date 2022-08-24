@@ -76,11 +76,13 @@ Omit the dropdb command the first time you run tests.
 
 Errors are returned as JSON in the following format:<br>
 
+```json
     {
         "success": False,
         "error": 404,
         "message": "resource not found"
     }
+```
 
 The API will return three types of errors:
 
