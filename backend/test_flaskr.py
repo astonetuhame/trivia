@@ -109,7 +109,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(len(data["categories"]))
 
     def test_get_questions_by_category(self):
-        response = self.client().get('/categories/2/questions')
+        response = self.client().get('/categories/1/questions')
 
         data = json.loads(response.data)
 
@@ -133,7 +133,7 @@ class TriviaTestCase(unittest.TestCase):
     def test_play_quiz_game(self):
         request_data = {
             'previous_questions': [1, 2, 3, 4],
-            'quiz_category': {'id': 2, 'type': 'Science'}
+            'quiz_category': {'id': 1, 'type': 'Science'}
         }
         res = self.client().post('/quizzes', data=json.dumps(request_data),
                                  content_type='application/json')
