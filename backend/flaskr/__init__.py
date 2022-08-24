@@ -143,6 +143,7 @@ def create_app(test_config=None):
         questions = [question.format() for question in Question.query.all() if
                      re.search(search_term, question.question, re.IGNORECASE)]
         return jsonify({
+            "success": True,
             'questions': questions,
             'total_questions': len(questions)
         })
