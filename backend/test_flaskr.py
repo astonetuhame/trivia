@@ -89,7 +89,6 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(len(data["question"]))
     
     def test_search_questions(self):
-
         response = self.client().post('/questions/search',
                                         json={'searchTerm': 'IDE'})
 
@@ -120,7 +119,6 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(question, None)
 
     def test_get_questions_by_category(self):
-
         response = self.client().get('/categories/2/questions')
 
         data = json.loads(response.data)
@@ -132,6 +130,15 @@ class TriviaTestCase(unittest.TestCase):
 
         # check that current category returned is science
         self.assertEqual(data['current_category'], 'Science')
+
+    def test_400_if_questions_by_category_fails(self):
+        response = self.client().get('/categories/100/questions')
+
+        data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'bad request')
 
 
 # Make the tests conveniently executable
