@@ -132,7 +132,7 @@ The API will return three types of errors:
 ```
 
 
-#### GET '/questions?page=${integer}'
+#### GET /questions?page=${integer}
 
 * General: Returns a list questions, paginated in groups of 10.
 * Request Arguments: `page` - integer
