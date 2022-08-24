@@ -414,5 +414,5 @@ The API will return three types of errors:
 
 ## Authors
 
-[Astone Tuhame](https://github/astonetuhame) authored the API (`__init__.py`), test suite (`test_flaskr.py`), and this README.<br>
+[Astone Tuhame](https://github.com/astonetuhame) authored the API (`__init__.py`), test suite (`test_flaskr.py`), and this README.<br>
 All other project files, including the models and frontend, were created by [Udacity](https://www.udacity.com/) as a project template for the [Full Stack Web Developer Nanodegree](https://www.udacity.com/course/full-stack-web-developer-nanodegree--nd0044).
