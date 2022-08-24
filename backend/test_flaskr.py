@@ -78,6 +78,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["success"], False)
         self.assertEqual(data["message"], "resource not found")
 
+
     def test_create_new_question(self):
         res = self.client().post("/questions", json=self.new_question)
         data = json.loads(res.data)
@@ -96,7 +97,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(len(data['questions']))
+        self.assertNotEqual(len(data['questions']), 0)
 
     def test_405_if_question_creation_not_allowed(self):
         res = self.client().post("/questions/45", json=self.new_question)
@@ -117,6 +118,20 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["deleted"], 2)
         self.assertTrue(data["total_questions"])
         self.assertEqual(question, None)
+
+    def test_get_questions_by_category(self):
+
+        response = self.client().get('/categories/2/questions')
+
+        data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['success'], True)
+
+        self.assertNotEqual(len(data['questions']), 0)
+
+        # check that current category returned is science
+        self.assertEqual(data['current_category'], 'Science')
 
 
 # Make the tests conveniently executable
