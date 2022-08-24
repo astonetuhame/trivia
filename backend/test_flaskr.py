@@ -86,6 +86,17 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["success"], True)
         self.assertTrue(data["question"])
         self.assertTrue(len(data["question"]))
+    
+    def test_search_questions(self):
+
+        response = self.client().post('/questions/search',
+                                        json={'searchTerm': 'IDE'})
+
+        data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertEqual(len(data['questions']))
 
     def test_405_if_question_creation_not_allowed(self):
         res = self.client().post("/questions/45", json=self.new_question)
