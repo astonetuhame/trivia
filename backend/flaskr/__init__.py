@@ -138,7 +138,6 @@ def create_app(test_config=None):
     """
     @app.route('/questions', methods=['POST'])
     def add_question():
-        # body = request.get_json()
 
         new_question = request.json.get("question")
         new_answer = request.json.get("answer")
@@ -149,17 +148,21 @@ def create_app(test_config=None):
                          'Required question object keys missing from request '
                          'body')
 
-        question = Question(new_question, new_answer,
-                            new_category, new_difficulty)
-        question.insert()
+        try:
+            question = Question(new_question, new_answer,
+                                new_category, new_difficulty)
+            question.insert()
 
-        return jsonify(
-            {
-                "success": True,
-                "question": question.format(),
-                "total_questions": len(Question.query.all()),
-            }
-        )
+            return jsonify(
+                {
+                    "success": True,
+                    "question": question.format(),
+                    "total_questions": len(Question.query.all()),
+                }
+            )
+        
+        except:
+            abort(422)
 
     """
     @TODO:
@@ -252,5 +255,29 @@ def create_app(test_config=None):
     Create error handlers for all expected errors
     including 404 and 422.
     """
+    @app.errorhandler(404)
+    def not_found(error):
+        return (
+            jsonify({"success": False, "error": 404, "message": "resource not found"}),
+            404,
+        )
+
+    @app.errorhandler(422)
+    def unprocessable(error):
+        return (
+            jsonify({"success": False, "error": 422, "message": "unprocessable"}),
+            422,
+        )
+
+    @app.errorhandler(400)
+    def bad_request(error):
+        return jsonify({"success": False, "error": 400, "message": "bad request"}), 400
+
+    @app.errorhandler(405)
+    def not_found(error):
+        return (
+            jsonify({"success": False, "error": 405, "message": "method not allowed"}),
+            405,
+        )
 
     return app
