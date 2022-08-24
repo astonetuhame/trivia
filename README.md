@@ -393,7 +393,7 @@ The API will return three types of errors:
 ```json
 {
     "previous_questions": [20, 21],
-    "quiz_category": {"type": "Science", "id": "1"}
+    "quiz_category": {"id": 1, "type": "Science"}
  }
 ```
 * Returns: JSON object with random question not among previous questions.
