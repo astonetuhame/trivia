@@ -97,7 +97,7 @@ def create_app(test_config=None):
                 {
                     "success": True,
                     "deleted": question_id,
-                    "total_books": len(Question.query.all()),
+                    "total_questions": len(Question.query.all()),
                 }
             )
 
