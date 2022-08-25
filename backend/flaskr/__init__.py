@@ -233,12 +233,4 @@ def create_app(test_config=None):
         return jsonify({"success": False, "error": 405,
                         "message": "method not allowed"}),  405
 
-    @app.errorhandler(500)
-    def server_error(error):
-        return (
-            jsonify({"success": False, "error": 500,
-                    "message": "server error"}),
-            500,
-        )
-
     return app
