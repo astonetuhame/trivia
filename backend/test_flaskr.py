@@ -127,14 +127,6 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(data["categories"])
         self.assertTrue(len(data["categories"]))
 
-    def test_404_if_get_categories_fails(self):
-        res = self.client().get("/categories")
-        data = json.loads(res.data)
-
-        self.assertEqual(res.status_code, 404)
-        self.assertEqual(data['success'], False)
-        self.assertEqual(data['message'], 'resource not found')
-
     def test_get_questions_by_category(self):
         res = self.client().get('/categories/1/questions')
 
