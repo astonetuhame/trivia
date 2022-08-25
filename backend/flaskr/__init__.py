@@ -48,6 +48,11 @@ def create_app(test_config=None):
     def get_categories():
         categories = Category.query.all()
         formatted_categories = [category.format() for category in categories]
+
+        # abort 404 if no categories found
+        if (len(formatted_categories) == 0):
+            abort(404)
+
         return jsonify({
             "success": True,
             "categories": formatted_categories
