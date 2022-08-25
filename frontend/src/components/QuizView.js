@@ -117,7 +117,7 @@ class QuizView extends Component {
                   this.selectCategory({ type: this.state.categories[id].id, id })
                 }
               >
-                {this.state.categories[id].id}
+                {this.state.categories[id].type}
               </div>
             );
           })}
