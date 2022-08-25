@@ -29,8 +29,6 @@ Once you have your virtual environment setup and running, install dependencies b
 
 ```bash
 cd backend
-Copy .env.example to .env
-Set the DB_ environment variables in .env file
 pip install -r requirements.txt
 ```
 
@@ -51,6 +49,9 @@ From within the `backend` directory first ensure you are working using your crea
 To run the server, execute:
 
 ```bash
+cd backend
+Copy .env.example to .env
+Set the DB_ environment variables in .env file
 export FLASK_APP=flaskr
 export FLASK_ENV=development
 flask run
